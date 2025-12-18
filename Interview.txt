@@ -1,0 +1,40 @@
+// Closures
+// Stack
+// Queue
+// Differ b/w Class & Object
+// JavaScript Engine
+// !==  ?==
+// Execution context & call stack
+// Destructuring
+// Template literals
+// Modules (import / export)
+// Default parameters
+// Optional chaining
+
+
+To Cover // Important
+
+CI/ CD Pipelines
+GitHub
+Promise.Resolve
+Event loop (call stack, callback queue, microtasks)
+Heap
+Callbacks
+Promises
+async / await
+Spread & rest operators
+JSX
+Components (functional vs class – focus on functional)
+Props vs State
+Component re-rendering
+Dependency array behavior
+useState
+useEffect
+Cleanup functions
+useContext
+useRef (basic understanding)
+Controlled vs uncontrolled components
+Lifting state up
+Conditional rendering
+Lists & keys
+Form handling

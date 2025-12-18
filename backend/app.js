@@ -4,6 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { dbConnection } from "./db/dbConnection.js";
+import MessageRoute from "./routes/message.Route.js";
+import { errorMiddleware } from "./middleware/errorMiddleware.js";
 
 
 const app = express();
@@ -21,7 +23,11 @@ app.use(fileUpload({
 }))
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
+app.use('/api/v1/message' , MessageRoute);
+
 
 dbConnection();
+
+app.use(errorMiddleware);
 
 export default app;
