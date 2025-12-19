@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 
 const userSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-        minLength: [3, "First name must contain at least 3 characters"]
-    },
+        firstName: {
+            type: String,
+            required: true,
+            minLength: [3, "First name must contain at least 3 characters"]
+        },
         lastName: {
             type: String,
             required: true,
@@ -62,10 +63,6 @@ const userSchema = new mongoose.Schema({
         }
     });
 
-
-
-
-
     userSchema.pre("save", async function (next) {
         if (!this.isModified("password")) {
             next();
@@ -76,5 +73,12 @@ const userSchema = new mongoose.Schema({
     userSchema.methods.comparePassword = async function (enteredPassword) {
         return await bcrypt.compare(enteredPassword, this.password);
     }
+
+    userSchema.methods.generateToken = async function () {
+        return jwt.sign({id: this._id}, process.env.JWT_SECRETKEY, {
+            expiresIn: process.env.JWT_EXPIRES
+        })
+    }
+
 
 export const User = mongoose.model("User", userSchema);
