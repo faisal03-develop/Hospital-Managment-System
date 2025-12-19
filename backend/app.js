@@ -6,7 +6,7 @@ import fileUpload from "express-fileupload";
 import { dbConnection } from "./db/dbConnection.js";
 import MessageRoute from "./routes/message.Route.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
-
+import UserRoute from "./routes/user.Route.js";
 
 const app = express();
 config({path: "./config/config.env"})
@@ -24,6 +24,7 @@ app.use(fileUpload({
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use('/api/v1/message' , MessageRoute);
+app.use('/api/v1/user' , UserRoute);
 
 
 dbConnection();
