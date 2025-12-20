@@ -1,6 +1,7 @@
 import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
 import { User } from "../models/user.Model.js";
+import { generateeToken } from "../utils/jwtToken.js";
 
 export const registerUser = catchAsyncErrors(async (req, res, next) => {
     const {firstName, lastName, email, phone, password, gender, dob, nic, role, doctorDepartment, docAvatar} =req.body;
@@ -14,11 +15,7 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
     user = await User.create({
         firstName, lastName, email, phone, password, gender, dob, nic, role, doctorDepartment, docAvatar
     });
-    res.status(200).json({
-        success: true,
-        message: "User Registered Successfully",
-        user
-    })
+    generateeToken(user, "User Registered Successfully", 200, res);
 
 });
 
@@ -38,17 +35,21 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
         if(user.role !== role){
             return next(new ErrorHandler("User with this role not found", 400));
         }
-        const token = await user.generateToken();
-        res.status(200).json({
-            success: true,
-            message: "User Logged In Successfully",
-            // token
-    })
+        // const token = await user.generateToken();
+        generateeToken(user, "User Logged In Successfully", 200, res);
 });
 
-// .cookie("token", token, {
-//             httpOnly: true,
-//             maxAge: 15 * 60 * 1000,
-//             sameSite: "none",
-//             secure: true
-//         })
+export const addNewAdmin = catchAsyncErrors(async(req, res ,next) => {
+    const {firstName, lastName, email, phone, password, gender, dob, nic, role} =req.body;
+    if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic){
+        return next(new ErrorHandler("Please Fill Full Form", 400));
+    }
+    let user = await User.findOne({email})
+    if(user){
+        return next(new ErrorHandler("Email Already Registered", 400));
+    }
+    user = await User.create({
+        firstName, lastName, email, phone, password, gender, dob, nic, role:"admin"
+    });
+    generateeToken(user, "Admin Registered Successfully", 200, res);
+})
