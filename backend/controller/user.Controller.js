@@ -37,6 +37,7 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
         }
         // const token = await user.generateToken();
         generateeToken(user, "User Logged In Successfully", 200, res);
+        
 });
 
 export const addNewAdmin = catchAsyncErrors(async(req, res ,next) => {
