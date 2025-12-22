@@ -8,9 +8,12 @@ import MessageRoute from "./routes/message.Route.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import UserRoute from "./routes/user.Route.js";
 
+
 const app = express();
+
 config({path: "./config/config.env"})
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: [process.env.FRONTEND_URL],
     methods: ["GET", "POST", "PUT", "DELETE"],

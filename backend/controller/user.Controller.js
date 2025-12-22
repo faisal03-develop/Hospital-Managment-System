@@ -2,6 +2,8 @@ import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
 import { User } from "../models/user.Model.js";
 import { generateeToken } from "../utils/jwtToken.js";
+import cloudinary from 'cloudinary';
+
 
 export const registerUser = catchAsyncErrors(async (req, res, next) => {
     const {firstName, lastName, email, phone, password, gender, dob, nic, role, doctorDepartment, docAvatar} =req.body;
@@ -90,4 +92,39 @@ export const userLogout = catchAsyncErrors(async(req, res, next) => {
         success: true,
         message: "User Logged Out Successfully"
     })
+});
+
+export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
+    if(!req.files || Object.keys(req.files).length === 0){
+        console.log(req.files);
+        return next(new ErrorHandler("Doctor Avatar Required", 400));
+    }
+    const docAvatar = req.files.docAvatar;
+    const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+    if(!allowedFormats.includes(docAvatar.mimetype)){
+        return next(new ErrorHandler("File Format Not Supported", 400));
+    }
+    const {firstName, lastName, email, phone, password, gender, dob, nic, role, doctorDepartment} =req.body;
+    if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic || !role || !doctorDepartment){
+        return next(new ErrorHandler("Please Fill Full Form", 400));
+    }
+    const isRegistered = await User.findOne({email});
+    if(isRegistered){
+        return next(new ErrorHandler("Email Already Registered", 400));
+    }
+    const cloudinaryResponse = await cloudinary.uploader.upload(docAvatar.tempFilePath);
+    if(!cloudinaryResponse || cloudinaryResponse.error){
+        console.log("Cloudinary Error: ",cloudinaryResponse.error || "Unknown Cloudinary Error");
+    }
+    const doctor = await User.create({
+        firstName, lastName, email, phone, password, role:"doctor", gender, dob, nic, doctorDepartment, docAvatar:{
+            public_id: cloudinaryResponse.public_id, 
+            url: cloudinaryResponse.secure_url
+        }
+    });
+    res.status(200).json({
+        success: true,
+        message: "New Doctor Registered",
+        doctor
+    });
 })
