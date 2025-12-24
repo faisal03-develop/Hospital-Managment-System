@@ -153,6 +153,36 @@ You must be very strong here, as MERN interviews heavily rely on JS fundamentals
 * Polymorphism
 * Abstraction
 
+
+
+1. Is JavaScript fully OOP?
+No, it’s prototype-based, not purely class-based.
+
+2. Can you achieve encapsulation in JavaScript?
+Yes, using closures and access control.
+
+3. Is inheritance always good?
+No, overuse leads to tight coupling; composition is often better.
+
+4. Difference between abstraction and encapsulation?
+Abstraction hides complexity; encapsulation restricts access.
+
+5. Can we have polymorphism without inheritance?
+Yes, through method overriding or interfaces-like behavior.
+
+6. Are classes mandatory for OOP in JS?
+No, objects and prototypes are sufficient.
+
+7. Why prefer composition over inheritance?
+More flexible and easier to maintain.
+
+8. Does OOP mean stateful only?
+Mostly yes, but good design minimizes unnecessary state.
+
+Final Interview One-Liner
+
+“OOP structures code around objects and state, while functional programming focuses on pure functions and immutability; modern JavaScript often uses a mix of both.”
+
 ### Practical Understanding
 
 * OOP in JavaScript

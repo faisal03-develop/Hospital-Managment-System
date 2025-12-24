@@ -1,41 +1,139 @@
-// ✅Closures 
-// Stack 
-// Queue
-// Differ b/w Class & Object  
-// ✅JavaScript Engine
-// !==  ?==  
-// Execution context & call stack  
-//✅ Destructuring
-// Template literals
-// Modules (import / export)
-// Default parameters
-// Optional chaining
-
-
-To Cover // Important
-
-Server & Client Components
-CI/ CD Pipelines
-GitHub
-Promise.Resolve
-Event loop (call stack, callback queue, microtasks)
-Heap
-Callbacks
-✅ Promises
-✅ async / await
-Spread & rest operators
+✅Closures 
+✅Stack 
+✅Queue
+✅Differ b/w Class & Object  
+✅JavaScript Engine
+✅!==  ?==  
+✅Execution context & call stack  
+✅Destructuring
+✅Promises
+✅async / await
 ✅ JSX
 ✅ Components (functional vs class – focus on functional)
 ✅ Props vs State
-Component re-rendering
-Dependency array behavior
 ✅ useState
 ✅ useEffect
-Cleanup functions
-useContext
-useRef (basic understanding)
 ✅ Controlled vs uncontrolled components
 ✅ Lifting state up
-Conditional rendering
 ✅ Lists & keys
-Form handling
+✅Template literals
+✅Modules (import / export)
+✅Default parameters
+✅Optional chaining
+✅Server & Client Components
+✅CI/ CD Pipelines
+✅Promise.Resolve
+✅Event loop (call stack, callback queue, microtasks)
+✅Heap
+✅Callbacks
+✅Component re-rendering
+✅Conditional rendering
+✅useContext
+✅Spread & rest operators
+✅Dependency array behavior
+✅Cleanup functions
+✅Form handling
+✅useRef (basic understanding)
+✅GitHub
+✅What is Relative Position in CSS? 
+✅What is Absolute Position in CSS? 
+✅What is Fixed Position in CSS? 
+✅What is Sticky Position in CSS? 
+✅What is Z-index in CSS? 
+✅What is the Offset Property in CSS? 
+✅What is an Inline Element in CSS? 
+✅What is an Inline-Block Element in CSS? 
+✅What is a Block Element in CSS? 
+✅What is Display Flex in CSS? 
+✅What is Display Grid in CSS? 
+✅What does the Initial Property do in CSS? 
+✅What does the Inherit Property do in CSS? 
+✅What is the difference between `let`, `const`, and `var`? 
+✅Explain how `==` and `===` differ. 
+✅What is a closure? 
+✅What is JavaScript? 
+✅What are the data types supported by JavaScript? 
+✅What is hoisting? 
+✅Explain the concept of "this" in JavaScript. 
+✅What is the difference between `null` and `undefined`? 
+✅How does JavaScript handle asynchronous operations? 
+✅What is a promise? 
+✅What are async/await functions? 
+✅What are JavaScript prototypes? 
+✅Explain event delegation in JavaScript. 
+✅What are JavaScript modules? 
+✅How can you prevent a function from being called multiple times? 
+✅What is the event loop? 
+✅What is a JavaScript event loop? 
+✅What is the difference between `deep copy` and `shallow copy`? 
+✅Explain the concept of "event bubbling" and "event capturing".
+✅What is the difference between `apply()` and `call()` methods? 
+✅What is `bind()` method used for? 
+✅What are generator functions? 
+
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-`-``-`-`-`-`-`-`-`-`-`-`-`-`-``-`-`-`-`-`-`-``-`-`--`-`-`-`--`-`-`-`-`-
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+
+To Cover Important
+
+
+
+What is the `new` keyword used for? 
+How do JavaScript’s `setTimeout` and `setInterval` work? 
+What is a `WeakMap` and how is it different from a `Map`? 
+What is a `Set` in JavaScript? 
+What is `Object.create()` used for? 
+How does JavaScript’s garbage collection work? 
+What are "decorators" in JavaScript? 
+
+
+Explain the difference between `prototype` and `__proto__`. 
+What is the purpose of `Object.assign()`? 
+What are "template literals"? 
+What is the `spread` operator? 
+What is the `rest` parameter? 
+Explain the `for...of` loop. 
+What are `async` and `await` keywords used for? 
+What is `Symbol` used for in JavaScript? 
+How do you create a class in JavaScript? 
+What is destructuring in JavaScript? 
+What is the `Proxy` object? 
+What does event-driven programming mean? 
+Differentiate between process.nextTick() and setImmediate() 
+What is an EventEmitter in Node.js 
+What are streams and buffer in Node.js 
+What is callback hell 
+middleware in Node.js 
+Primiptive and non primptive datatypes. 
+What are Indexing in MongoDB 
+MongoDB aggregation  and pipeline in the MongoDB aggregation 
+Replica Set in MongoDB 
+Truncate in mysql 
+Joins in mysql 
+relational databases and irrelational databases 
+race functions in node 
+Child process 
+Child threads process 
+Debounce 
+Throttle 
+What is the difference between require and import? 
+Temporal Deadzone 
+What's the difference between process.nextTick() and Promise.then() 
+multi tenancy ::an architecture where a single instance of software serves multiple customers (tenants), 
+allowing them to share resources while keeping their data and configurations separate 
+
+
+for (var i = 0; i < 3; i++) { setTimeout(() => console.log(i), 100); } 3,3,3 
+for (let i = 0; i < 3; i++) { setTimeout(() => console.log(i), 100); }1,23 
+console.log('Start');  
+setTimeout(() => { console.log('Timeout'); }, 0); 
+setImmediate(() => { console.log('Immediate'); });  
+console.log('End'); 

@@ -7,7 +7,7 @@ export const isAdminAuthenticated = catchAsyncErrors(async (req, res, next) => {
     const adminToken = req.cookies.adminToken;
 
     if (!adminToken) {
-        return next(new ErrorHandler("Admin not authenticated", 401));
+        return next(new ErrorHandler("No Admin Token to authenticate", 401));
     }
 
     const decoded = jwt.verify(adminToken, process.env.JWT_SECRETKEY);
