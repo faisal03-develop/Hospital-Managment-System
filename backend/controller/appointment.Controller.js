@@ -49,3 +49,11 @@ export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
         appointment,
     });
 });
+
+export const getAllAppointments = catchAsyncErrors(async (req, res, next) => {
+    const appointments = await Appointment.find();
+    res.status(200).json({
+        success: true,
+        appointments,
+    });
+});
