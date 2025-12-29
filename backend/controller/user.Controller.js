@@ -85,7 +85,7 @@ export const adminLogout = catchAsyncErrors(async(req, res, next) => {
 
 
 export const userLogout = catchAsyncErrors(async(req, res, next) => {
-    res.status(200).cookie("userToken", "", {
+    res.status(200).cookie("patientToken", "", {
         httpOnly: true,
         expires: new Date(Date.now()),
     }).json({
@@ -104,8 +104,8 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
     if(!allowedFormats.includes(docAvatar.mimetype)){
         return next(new ErrorHandler("File Format Not Supported", 400));
     }
-    const {firstName, lastName, email, phone, password, gender, dob, nic, role, doctorDepartment} =req.body;
-    if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic || !role || !doctorDepartment){
+    const {firstName, lastName, email, phone, password, gender, dob, nic, doctorDepartment} =req.body;
+    if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic || !doctorDepartment){
         return next(new ErrorHandler("Please Fill Full Form", 400));
     }
     const isRegistered = await User.findOne({email});

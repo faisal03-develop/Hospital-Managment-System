@@ -26,16 +26,16 @@ export const isAdminAuthenticated = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const isPatientAuthenticated = catchAsyncErrors(async (req, res, next) => {
-    const userToken = req.cookies.userToken;
+    const patientToken = req.cookies.patientToken;
 
-    if (!userToken) {
-        return next(new ErrorHandler("Patient not authenticated", 401));
+    if (!patientToken) {
+        return next(new ErrorHandler("User not authenticated", 401));
     }
 
-    const decoded = jwt.verify(userToken, process.env.JWT_SECRETKEY);
+    const decoded = jwt.verify(patientToken, process.env.JWT_SECRETKEY);
     req.user = await User.findById(decoded.id);
 
-    if (!req.user || req.user.role !== "user") {
+    if (!req.user || req.user.role !== "patient") {
         return next(
             new ErrorHandler(
                 `${req.user?.role || "User"} not authorized to access this resource`,
