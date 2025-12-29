@@ -7,6 +7,7 @@ import { dbConnection } from "./db/dbConnection.js";
 import MessageRoute from "./routes/message.Route.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import UserRoute from "./routes/user.Route.js";
+import AppointmentRoute from "./routes/appointment.Route.js";
 
 
 const app = express();
@@ -28,7 +29,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use('/api/v1/message' , MessageRoute);
 app.use('/api/v1/user' , UserRoute);
-
+app.use('/api/v1/appointment' , AppointmentRoute);
 
 dbConnection();
 

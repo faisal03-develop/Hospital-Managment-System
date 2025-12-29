@@ -70,6 +70,9 @@
 ✅What is the difference between `apply()` and `call()` methods? 
 ✅What is `bind()` method used for? 
 ✅What are generator functions? 
+What are "template literals"?
+What is the `spread` operator? 
+What is the `rest` parameter? 
 
 
 
@@ -87,25 +90,22 @@ To Cover Important
 
 
 What is the `new` keyword used for? 
-How do JavaScript’s `setTimeout` and `setInterval` work? 
+How do JavaScript’s `setTimeout` and `setInterval` work?
 What is a `WeakMap` and how is it different from a `Map`? 
-What is a `Set` in JavaScript? 
-What is `Object.create()` used for? 
-How does JavaScript’s garbage collection work? 
-What are "decorators" in JavaScript? 
+What is a `Set` in JavaScript?
+What is `Object.create()` used for?
+How does JavaScript’s garbage collection work?
+What are "decorators" in JavaScript?
 
 
 Explain the difference between `prototype` and `__proto__`. 
 What is the purpose of `Object.assign()`? 
-What are "template literals"? 
-What is the `spread` operator? 
-What is the `rest` parameter? 
 Explain the `for...of` loop. 
-What are `async` and `await` keywords used for? 
 What is `Symbol` used for in JavaScript? 
 How do you create a class in JavaScript? 
 What is destructuring in JavaScript? 
 What is the `Proxy` object? 
+What are `async` and `await` keywords used for? 
 What does event-driven programming mean? 
 Differentiate between process.nextTick() and setImmediate() 
 What is an EventEmitter in Node.js 
