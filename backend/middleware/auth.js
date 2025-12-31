@@ -25,6 +25,7 @@ export const isAdminAuthenticated = catchAsyncErrors(async (req, res, next) => {
     next();
 });
 
+
 export const isPatientAuthenticated = catchAsyncErrors(async (req, res, next) => {
     const patientToken = req.cookies.patientToken;
 
@@ -47,8 +48,6 @@ export const isPatientAuthenticated = catchAsyncErrors(async (req, res, next) =>
     next();
 });
 
-
-
 export const isDoctorAuthenticated = catchAsyncErrors(async (req, res, next) => {
     const doctorToken = req.cookies.doctorToken;
 
@@ -69,4 +68,26 @@ export const isDoctorAuthenticated = catchAsyncErrors(async (req, res, next) => 
     }
 
     next();
+});
+
+
+export const isAuthenticated = catchAsyncErrors( async (req, res, next) => {
+  const {adminToken, patientToken, doctorToken} = req.cookies;
+
+  let token;
+
+  if (adminToken) token = adminToken;
+  else if (doctorToken) token = doctorToken;
+  else token = patientToken;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRETKEY);
+    req.user = await User.findById(decoded.id);
+    if (!req.user) {
+      return res.status(401).json({ success: false });
+    }
+    next();
+  } catch {
+    return res.status(401).json({ success: false });
+  }
 });

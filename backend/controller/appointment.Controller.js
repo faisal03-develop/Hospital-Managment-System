@@ -6,7 +6,7 @@ import { User } from "../models/user.Model.js";
 
 export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
     const { a_date, department, doctor_firstName, doctor_lastName, hasVisited, address } = req.body;
-    if (!a_date || !department || !doctor_firstName  || !doctor_lastName || !hasVisited || !address) {
+    if (!a_date || !department || !doctor_firstName  || !doctor_lastName || hasVisited === undefined || !address) {
         return next(new ErrorHandler("Please fill all the fields", 400));
     }
     const isConflict = await User.find({
@@ -49,6 +49,14 @@ export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
         appointment,
     });
 });
+
+export const getMyAppointments = catchAsyncErrors( async (req, res, next) => {
+    const appointments = await Appointment.find({ patientId: req.user._id });
+    res.status(200).json({
+        success: true,
+        appointments,
+    });
+})
 
 export const getAllAppointments = catchAsyncErrors(async (req, res, next) => {
     const appointments = await Appointment.find();
