@@ -94,6 +94,16 @@ export const userLogout = catchAsyncErrors(async(req, res, next) => {
     })
 });
 
+export const doctorLogout = catchAsyncErrors(async(req, res, next) => {
+    res.status(200).cookie("doctorToken", "", {
+        httpOnly: true,
+        expires: new Date(Date.now()),
+    }).json({
+        success: true,
+        message: "Doctor Logged Out Successfully"
+    })
+});
+
 export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
     if(!req.files || Object.keys(req.files).length === 0){
         console.log(req.files);
