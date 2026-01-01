@@ -56,6 +56,9 @@ export const getMyAppointments = catchAsyncErrors( async (req, res, next) => {
         success: true,
         appointments,
     });
+    if(!appointments){
+        return next(new ErrorHandler("No Appointments Found", 404));
+    }
 })
 
 export const getAllAppointments = catchAsyncErrors(async (req, res, next) => {
@@ -96,4 +99,4 @@ export const deleteAppointment = catchAsyncErrors(async (req, res, next) => {
         success: true,
         message: "Appointment deleted successfully",
     });
-})
+});

@@ -9,7 +9,7 @@ export const generateeToken = async (user, message, statusCode, res) => {
         cookieName = "patientToken";
     };
     res.status(statusCode).cookie(cookieName, token, {
-        expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 30 * 60 * 1000),  //30 Minutes
         httpOnly: true,
         sameSite: "none",
         secure: true,

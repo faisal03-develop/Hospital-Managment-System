@@ -145,3 +145,15 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
     });
 });
 
+export const getAllUsers = catchAsyncErrors( async(req, res, next) => {
+    try{
+        const users = await User.find({});
+        res.status(200).json({
+            success: true,
+            users,
+        });
+    }
+    catch(error){
+        return next(new ErrorHandler(error.message, 500));
+    }
+})

@@ -7,6 +7,7 @@ export const isAdminAuthenticated = catchAsyncErrors(async (req, res, next) => {
     const adminToken = req.cookies.adminToken;
 
     if (!adminToken) {
+        // console.log("This Messege is comming from the Server side auth middleware");
         return next(new ErrorHandler("No Admin Token to authenticate", 401));
     }
 
