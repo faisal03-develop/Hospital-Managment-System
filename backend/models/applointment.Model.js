@@ -45,7 +45,7 @@ const appointmentSchema = new mongoose.Schema({
         department:{
             type: String,
             required: true,
-            enum: ["Cardiology", "Dermatology", "Neurology", "Pediatrics", "Psychiatry", "Radiology", "Oncology", "Gynecology", "Orthopedics", "General Medicine"]
+            enum: ["Cardiology", "Dermatology", "Neurology", "Pediatrics", "Oncology", "Orthopedics", "ENT"]
         },
         doctor:{
             firstName: {

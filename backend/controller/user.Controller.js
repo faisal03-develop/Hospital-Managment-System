@@ -88,11 +88,6 @@ export const findAllDoctors = catchAsyncErrors( async(req, res, next) => {
 })
 
 
-
-
-
-
-
 export const getUserDetails = catchAsyncErrors( async(req, res, next) => {
     const user = req.user;
     res.status(200).json({

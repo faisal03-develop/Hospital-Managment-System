@@ -100,3 +100,15 @@ export const deleteAppointment = catchAsyncErrors(async (req, res, next) => {
         message: "Appointment deleted successfully",
     });
 });
+
+
+export const getAppointments = catchAsyncErrors( async (req, res, next) => {
+    const appointments = await Appointment.find({ doctorId: req.user._id });
+    if(!appointments){
+        return next(new ErrorHandler("No Appointments Found", 404));
+    }
+    res.status(200).json({
+        success: true,
+        appointments,
+    });
+})
