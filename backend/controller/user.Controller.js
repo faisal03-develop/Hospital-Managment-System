@@ -21,9 +21,31 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
 
 });
 
+//     export const login = catchAsyncErrors(async(req, res, next) => {
+//         const {email, password, role} = req.body;
+//         if(!email || !password || !role){
+//             return next(new ErrorHandler("Please Provide All Details", 400));
+//         }
+//         const user = await User.findOne({email}).select("+password");
+//         if(!user){
+//             return next(new ErrorHandler("Invalid Credentials", 400));
+//         }
+//         const isPasswordMatched = await user.comparePassword(password);
+//         if(!isPasswordMatched){
+//             return next(new ErrorHandler("Incorrect Password or Email", 400));
+//         }
+//         if(user.role !== role){
+//             return next(new ErrorHandler("User with this role not found", 400));
+//         }
+//         // const token = await user.generateToken();
+//         generateeToken(user, "User Logged In Successfully", 200, res);
+        
+// });
+
+
     export const login = catchAsyncErrors(async(req, res, next) => {
-        const {email, password, role} = req.body;
-        if(!email || !password || !role){
+        const {email, password} = req.body;
+        if(!email || !password){
             return next(new ErrorHandler("Please Provide All Details", 400));
         }
         const user = await User.findOne({email}).select("+password");
@@ -34,13 +56,13 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
         if(!isPasswordMatched){
             return next(new ErrorHandler("Incorrect Password or Email", 400));
         }
-        if(user.role !== role){
-            return next(new ErrorHandler("User with this role not found", 400));
-        }
         // const token = await user.generateToken();
         generateeToken(user, "User Logged In Successfully", 200, res);
         
 });
+
+
+
 
 export const addNewAdmin = catchAsyncErrors(async(req, res ,next) => {
     const {firstName, lastName, email, phone, password, gender, dob, nic, role} =req.body;
