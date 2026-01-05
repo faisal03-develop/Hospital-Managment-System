@@ -2,6 +2,8 @@ import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
 import { Appointment } from "../models/applointment.Model.js";
 import { User } from "../models/user.Model.js";
+import {isToday} from "../utils/dateUtils.js";
+
 
 
 export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
@@ -104,11 +106,13 @@ export const deleteAppointment = catchAsyncErrors(async (req, res, next) => {
 
 export const getAppointments = catchAsyncErrors( async (req, res, next) => {
     const appointments = await Appointment.find({ doctorId: req.user._id });
+    const todayAppointments = appointments.filter((appointment) => isToday(appointment.a_date));
     if(appointments.length === 0){
         return next(new ErrorHandler("No Appointments Found", 404));
     }
     res.status(200).json({
         success: true,
         appointments,
+        todayAppointments,
     });
 })
