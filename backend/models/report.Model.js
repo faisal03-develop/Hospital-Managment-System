@@ -41,21 +41,6 @@ const reportSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-
-    labTestsSuggested: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
-
-    reportFiles: [
-      {
-        public_id: String,
-        url: String,
-      },
-    ],
-
     followUpDate: {
       type: Date,
     },

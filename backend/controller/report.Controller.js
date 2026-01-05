@@ -16,19 +16,22 @@ export const getAllReports = catchAsyncErrors(async (req, res, next) => {
     });
 
 export const createReport = catchAsyncErrors(async (req, res, next) => {
-    const {reportName, diagnosis, symptoms, observations, reportFiles, followUpDate, remarks} = req.body;
-    if(!reportName || !diagnosis || !symptoms || !observations || !reportFiles || !followUpDate || !remarks)
+    const {reportName, diagnosis, symptoms, observations, followUpDate, remarks} = req.body;
+    if(!reportName || !diagnosis || !symptoms || !observations || !followUpDate || !remarks)
         return next("Please fill all the fields", 400);
+    const appointment = await Appointment.findById(req.params.id);
+    if(!appointment){
+        return next("Appointment not found", 404);
+    }
     const doctorId = req.user._id;
     const appointmentId = req.params.id; 
-    const patientId = Appointment.patientId;
+    const patientId = appointment.patientId;
     try{
         const report = await Report.create({
             reportName,
             diagnosis,
             symptoms,
             observations,
-            reportFiles,
             followUpDate,
             remarks,
             doctorId,
