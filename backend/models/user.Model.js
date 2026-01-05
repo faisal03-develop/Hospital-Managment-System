@@ -70,6 +70,16 @@ const userSchema = new mongoose.Schema({
         this.password = await bcrypt.hash(this.password, 10);
     })
 
+    userSchema.pre("findOneAndUpdate", async function() {
+    const update = this.getUpdate();
+    if (update.password) {
+        const hashed = await bcrypt.hash(update.password, 10);
+        update.password = hashed;
+    }
+});
+
+
+
     userSchema.methods.comparePassword = async function (enteredPassword) {
         return await bcrypt.compare(enteredPassword, this.password);
     }
