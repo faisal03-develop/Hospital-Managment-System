@@ -42,6 +42,7 @@ export const createReport = catchAsyncErrors(async (req, res, next) => {
             success: true,
             report,
         });
+        appointment.status = "completed";
     }catch(error){
         next(`Failed to create report: ${error}`, 500);
     }

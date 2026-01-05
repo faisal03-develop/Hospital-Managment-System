@@ -27,13 +27,6 @@ export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
     const doctorId = isConflict[0]._id;
     const patientId = req.user._id;
     const appointment = await Appointment.create({
-        firstName:req.user.firstName,
-        lastName: req.user.lastName,
-        email: req.user.email,
-        phone : req.user.phone,
-        nic: req.user.nic,
-        dob: req.user.dob,
-        gender: req.user.gender,
         doctor: {
             firstName: doctor_firstName,
             lastName: doctor_lastName,
@@ -53,7 +46,7 @@ export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getMyAppointments = catchAsyncErrors( async (req, res, next) => {
-    const appointments = await Appointment.find({ patientId: req.user._id });
+    const appointments = await Appointment.find({ patientId: req.user._id }).populate("patientId");
     res.status(200).json({
         success: true,
         appointments,
@@ -64,7 +57,7 @@ export const getMyAppointments = catchAsyncErrors( async (req, res, next) => {
 })
 
 export const getAllAppointments = catchAsyncErrors(async (req, res, next) => {
-    const appointments = await Appointment.find();
+    const appointments = await Appointment.find().populate("patientId").populate("doctorId");
     res.status(200).json({
         success: true,
         appointments,
