@@ -107,6 +107,7 @@ export const deleteAppointment = catchAsyncErrors(async (req, res, next) => {
 export const getAppointments = catchAsyncErrors( async (req, res, next) => {
     const appointments = await Appointment.find({ doctorId: req.user._id });
     const todayAppointments = appointments.filter((appointment) => isToday(appointment.a_date));
+    const pendingAppointments = appointments.filter((appointment) => appointment.status !== "completed");
     if(appointments.length === 0){
         return next(new ErrorHandler("No Appointments Found", 404));
     }
@@ -114,5 +115,6 @@ export const getAppointments = catchAsyncErrors( async (req, res, next) => {
         success: true,
         appointments,
         todayAppointments,
+        pendingAppointments
     });
 })

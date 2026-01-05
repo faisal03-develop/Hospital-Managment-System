@@ -174,3 +174,36 @@ export const getAllUsers = catchAsyncErrors( async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500));
     }
 })
+
+export const updateUser = catchAsyncErrors( async(req, res, next) => {
+    try{
+        const {id} = req.params;
+        const user = await User.findById(id);
+        if(!user){
+            return next(new ErrorHandler("User Not Found", 404));
+        }
+        const {firstName, lastName, email, phone, password, gender, dob, nic} =  req.body;
+        if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic){
+            return next(new ErrorHandler("Please Give all the required Details", 400));
+        }
+        const updatedUser = await User.findByIdAndUpdate(id, {
+        firstName,
+        lastName,
+        email,
+        phone,
+        password,
+        gender,
+        dob,
+        nic,
+        role : user.role
+        }, {new: true});
+        res.status(200).json({
+            success: true,
+            message: "User Updated Successfully",
+            updatedUser
+        });
+    }
+    catch(error){
+        return next(new ErrorHandler(error.message, 500));
+    }
+})
