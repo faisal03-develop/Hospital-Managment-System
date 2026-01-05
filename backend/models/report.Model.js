@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const reportSchema = new mongoose.Schema(
   {
+    reportName:{
+        type: String,
+        required: true,
+    },
     appointmentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Appointment",

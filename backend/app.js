@@ -8,6 +8,7 @@ import MessageRoute from "./routes/message.Route.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import UserRoute from "./routes/user.Route.js";
 import AppointmentRoute from "./routes/appointment.Route.js";
+import ReportRoute from "./routes/report.Route.js"
 
 
 const app = express();
@@ -31,6 +32,8 @@ app.use(express.urlencoded({extended: true}));
 app.use('/api/v1/message' , MessageRoute);
 app.use('/api/v1/user' , UserRoute);
 app.use('/api/v1/appointment' , AppointmentRoute);
+app.use('/api/v1/report', ReportRoute);
+
 
 dbConnection();
 
