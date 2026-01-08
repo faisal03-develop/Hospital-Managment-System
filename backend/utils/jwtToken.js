@@ -19,5 +19,4 @@ export const generateeToken = async (user, message, statusCode, res) => {
         token,
         user,
     });
-
 }

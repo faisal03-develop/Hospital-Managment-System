@@ -2,8 +2,7 @@ import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
 import { Appointment } from "../models/applointment.Model.js";
 import { User } from "../models/user.Model.js";
-import {isToday} from "../utils/dateUtils.js";
-
+import {isNotPastDate, isToday} from "../utils/dateUtils.js";
 
 
 export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
@@ -22,6 +21,10 @@ export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
     }
     if(isConflict.length > 1){
         return next(new ErrorHandler("Doctor's Conflict PLease Contact through Email or Contact the Hsopital for Further Assistance ", 404));
+    }
+
+    if (!isNotPastDate(req.body.a_date)) {
+        return next("Appointment date cannot be in the past", 400);
     }
 
     const doctorId = isConflict[0]._id;
@@ -47,9 +50,11 @@ export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
 
 export const getMyAppointments = catchAsyncErrors( async (req, res, next) => {
     const appointments = await Appointment.find({ patientId: req.user._id }).populate("patientId");
+    const upcommingAppointments = await Appointment.find({ patientId: req.user._id, a_date: { $gte: new Date() } }).populate("patientId");
     res.status(200).json({
         success: true,
         appointments,
+        upcommingAppointments
     });
     if(!appointments){
         return next(new ErrorHandler("No Appointments Found", 404));
@@ -98,16 +103,14 @@ export const deleteAppointment = catchAsyncErrors(async (req, res, next) => {
 
 
 export const getAppointments = catchAsyncErrors( async (req, res, next) => {
-    const appointments = await Appointment.find({ doctorId: req.user._id });
-    const todayAppointments = appointments.filter((appointment) => isToday(appointment.a_date));
-    const pendingAppointments = appointments.filter((appointment) => appointment.status !== "completed");
+    const appointments = await Appointment.find({ doctorId: req.user._id }).populate("patientId");
+    // const todayAppointments = appointments.filter((appointment.a_date) => isToday(appointment.a_date)).populate("patientId");
     if(appointments.length === 0){
         return next(new ErrorHandler("No Appointments Found", 404));
     }
+    // console.log(`todayAppointments: `todayAppoiztments)
     res.status(200).json({
         success: true,
         appointments,
-        todayAppointments,
-        pendingAppointments
     });
 })
