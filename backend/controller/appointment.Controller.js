@@ -103,7 +103,28 @@ export const deleteAppointment = catchAsyncErrors(async (req, res, next) => {
 
 
 export const getAppointments = catchAsyncErrors( async (req, res, next) => {
-    const appointments = await Appointment.find({ doctorId: req.user._id }).populate("patientId");
+    let appointments = [];
+    const limit = Number(req.query.limit) || 5;
+    if(req.query.status === 'pending'){
+        appointments = await Appointment.find({ doctorId: req.user._id, status: "pending" }).sort({ createdAt: -1 })
+    .limit(limit).populate("patientId");
+    }
+    if(req.query.status === 'accepted'){
+        appointments = await Appointment.find({ doctorId: req.user._id, status: "accepted" }).sort({ createdAt: -1 })
+    .limit(limit).populate("patientId");
+    }
+    if(req.query.status === 'rejected'){
+        appointments = await Appointment.find({ doctorId: req.user._id, status: "rejected" }).sort({ createdAt: -1 })
+    .limit(limit).populate("patientId");
+    }
+    if(req.query.status === 'completed'){
+        appointments = await Appointment.find({ doctorId: req.user._id, status: "completed" }).sort({ createdAt: -1 })
+    .limit(limit).populate("patientId");
+    }
+    if(req.query.status === 'all'){
+        appointments = await Appointment.find({ doctorId: req.user._id }).populate("patientId");
+    };
+    // appointments = await Appointment.find({ doctorId: req.user._id }).populate("patientId");
     // const todayAppointments = appointments.filter((appointment.a_date) => isToday(appointment.a_date)).populate("patientId");
     if(appointments.length === 0){
         return next(new ErrorHandler("No Appointments Found", 404));
@@ -113,4 +134,4 @@ export const getAppointments = catchAsyncErrors( async (req, res, next) => {
         success: true,
         appointments,
     });
-})
+});
