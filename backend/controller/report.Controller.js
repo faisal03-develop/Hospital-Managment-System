@@ -48,3 +48,14 @@ export const createReport = catchAsyncErrors(async (req, res, next) => {
     }
 
 });
+
+export const getMyReports = catchAsyncErrors(async (req, res, next) => {
+        const reports = await Report.find({patientId: req.params.id});
+        res.status(200).json({
+            success: true,
+            reports,
+        });
+        if(!reports){
+            return next("No reports found", 404);
+        }
+});
