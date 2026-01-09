@@ -50,7 +50,8 @@ export const createReport = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getMyReports = catchAsyncErrors(async (req, res, next) => {
-        const reports = await Report.find({patientId: req.params.id});
+    const limit = Number(req.query.limit) || 5;
+        const reports = await Report.find({patientId: req.params.id}).limit(limit).sort({createdAt:-1});
         res.status(200).json({
             success: true,
             reports,
