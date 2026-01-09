@@ -43,10 +43,10 @@ export const createReport = catchAsyncErrors(async (req, res, next) => {
             report,
         });
         appointment.status = "completed";
+        await appointment.save(); 
     }catch(error){
         next(`Failed to create report: ${error}`, 500);
     }
-
 });
 
 export const getMyReports = catchAsyncErrors(async (req, res, next) => {
@@ -61,10 +61,10 @@ export const getMyReports = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getreport = catchAsyncErrors(async (req, res, next) => {
-        const reports = await Report.find({_id: req.params.id});
+        const report = await Report.find({_id: req.params.id}).populate("patientId").populate("doctorId");
         res.status(200).json({
             success: true,
-            reports,
+            report,
         });
         if(!reports){
             return next("No reports found", 404);

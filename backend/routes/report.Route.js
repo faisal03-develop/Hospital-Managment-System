@@ -1,11 +1,11 @@
 import express from "express";
-import {createReport, getMyReports} from "../controller/report.Controller.js"
+import {createReport, getMyReports, getreport} from "../controller/report.Controller.js"
 import { isDoctorAuthenticated, isPatientAuthenticated } from "../middleware/auth.js";
 
 const router = express.Router();
 
 router.post('/createreport/:id', isDoctorAuthenticated, createReport);
 router.get('/getmyreports/:id', getMyReports);
-router.get('/getreport/:id',isPatientAuthenticated, getMyReports);
+router.get('/getreport/:id',isPatientAuthenticated, getreport);
 
 export default router;
