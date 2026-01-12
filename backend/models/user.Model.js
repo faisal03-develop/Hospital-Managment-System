@@ -56,6 +56,8 @@ const userSchema = new mongoose.Schema({
         },
         doctorDepartment:{
             type: String,
+            required: true,
+            enum: ["Cardiology", "Dermatology", "Neurology", "Pediatrics", "Oncology", "Orthopedics", "ENT"]
         },
         docAvatar:{
             public_id: String,

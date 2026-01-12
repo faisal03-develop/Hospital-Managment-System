@@ -11,16 +11,6 @@ const appointmentSchema = new mongoose.Schema({
             required: true,
             enum: ["Cardiology", "Dermatology", "Neurology", "Pediatrics", "Oncology", "Orthopedics", "ENT"]
         },
-        doctor:{
-            firstName: {
-                type: String,
-                required: true,
-            },
-            lastName: {
-                type: String,
-                required: true,
-            },
-        },
         hasVisited:{
             type: Boolean,
             default: false
@@ -28,20 +18,26 @@ const appointmentSchema = new mongoose.Schema({
         doctorId:{
             type: mongoose.Schema.ObjectId,
             ref: "User",
+            required: [true, "DoctorId is required"],
         },
         patientId:{
             type: mongoose.Schema.ObjectId,
             ref: "User",
+            required: [true, "PatientId is required"],
         },
         address:{
             type: String,
-            required: true,
+            required: [true, "Address is required"],
         },
         status:{
             type: String,
             enum: ["pending", "accepted", "rejected", "completed"],
             default: "pending"
         }
-    });
+    },
+        {
+            timestamps: true,
+  }
+);
 
     export const Appointment = mongoose.model("Appointment", appointmentSchema);

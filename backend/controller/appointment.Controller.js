@@ -6,34 +6,15 @@ import {isNotPastDate, isToday} from "../utils/dateUtils.js";
 
 
 export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
-    const { a_date, department, doctor_firstName, doctor_lastName, hasVisited, address } = req.body;
-    if (!a_date || !department || !doctor_firstName  || !doctor_lastName || hasVisited === undefined || !address) {
+    const { a_date, department, doctorId, hasVisited, address } = req.body;
+    if (!a_date || !department || !doctorId || hasVisited === undefined || !address) {
         return next(new ErrorHandler("Please fill all the fields", 400));
     }
-    const isConflict = await User.find({
-        firstName: doctor_firstName,
-        lastName: doctor_lastName,
-        role: "doctor",
-        doctorDepartment: department,
-    });
-    if(isConflict.length === 0){
-        return next(new ErrorHandler("No Doctor found", 404));
-    }
-    if(isConflict.length > 1){
-        return next(new ErrorHandler("Doctor's Conflict PLease Contact through Email or Contact the Hsopital for Further Assistance ", 404));
-    }
-
     if (!isNotPastDate(req.body.a_date)) {
         return next("Appointment date cannot be in the past", 400);
     }
-
-    const doctorId = isConflict[0]._id;
     const patientId = req.user._id;
     const appointment = await Appointment.create({
-        doctor: {
-            firstName: doctor_firstName,
-            lastName: doctor_lastName,
-        },
         a_date,
         department,
         doctorId,
@@ -49,8 +30,8 @@ export const bookAppointment = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getMyAppointments = catchAsyncErrors( async (req, res, next) => {
-    const appointments = await Appointment.find({ patientId: req.user._id }).populate("patientId");
-    const upcommingAppointments = await Appointment.find({ patientId: req.user._id, a_date: { $gte: new Date() } }).populate("patientId");
+    const appointments = await Appointment.find({ patientId: req.user._id }).populate("patientId").populate("doctorId");
+    const upcommingAppointments = await Appointment.find({ patientId: req.user._id, a_date: { $gte: new Date() } }).populate("patientId").populate("doctorId");
     res.status(200).json({
         success: true,
         appointments,

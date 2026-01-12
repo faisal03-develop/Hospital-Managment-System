@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUser, login, addNewAdmin, findAllDoctors, getUserDetails, adminLogout, userLogout, addNewDoctor, doctorLogout, getAllUsers,updateUser } from "../controller/user.Controller.js";
+import { registerUser, login, addNewAdmin, findAllDoctors, getUserDetails, getDoctor, adminLogout, userLogout, addNewDoctor, doctorLogout, getAllUsers,updateUser } from "../controller/user.Controller.js";
 import { isPatientAuthenticated, isAdminAuthenticated, isDoctorAuthenticated, isAuthenticated } from "../middleware/auth.js";
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.post('/addnewdoctor', isAdminAuthenticated, addNewDoctor)
 router.get("/me", isAuthenticated, getUserDetails);
 router.get("/getallusers", isAdminAuthenticated, getAllUsers);
 router.put("/updateUser/:id",isPatientAuthenticated, updateUser)
-
+router.get('/getdoctor', isPatientAuthenticated, getDoctor)
 
 
 // router.get('/admin/me', isAdminAuthenticated, getUserDetails)

@@ -207,3 +207,58 @@ export const updateUser = catchAsyncErrors( async(req, res, next) => {
         return next(new ErrorHandler(error.message, 500));
     }
 })
+
+
+export const getDoctor = catchAsyncErrors(async (req, res, next) => {
+  const { department } = req.query;
+
+  if (!department) {
+    return next(new ErrorHandler("Please select a department", 400));
+  }
+
+  const doctors = await User.find({
+    doctorDepartment: department
+  });
+
+  if (!doctors.length) {
+    return next(new ErrorHandler("No Doctors Found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    doctors
+  });
+});
+
+// export const getDoctor = catchAsyncErrors( async (req, res, next) => {
+//     let doctors = [];
+//     const department = req.query.department;
+//     if(department === '' || undefined || null){
+//         return next(new ErrorHandler("Please Select a Department", 400));
+//     }
+//     if(department === 'Cardiology'){
+//         doctors = await User.find({doctorDepartment: department})
+//     };
+//     if(department === 'Dermatology'){
+//         doctors = await User.find({doctorDepartment: department})
+//     };
+//     if(department === 'Neurology'){
+//         doctors = await User.find({doctorDepartment: department})
+//     };
+//     if(department === 'Pediatrics'){
+//         doctors = await User.find({doctorDepartment: department})
+//     };
+//     if(department === 'Oncology'){
+//         doctors = await User.find({doctorDepartment: department})
+//     };
+//     if(department === 'ENT'){
+//         doctors = await User.find({doctorDepartment: department})
+//     };
+//     if(doctors.length === 0){
+//         return next(new ErrorHandler("No Doctors Found", 404));
+//     }
+//     res.status(200).json({
+//         success: true,
+//         doctors,
+//     })
+// })
