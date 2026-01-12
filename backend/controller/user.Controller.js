@@ -221,7 +221,12 @@ export const getDoctor = catchAsyncErrors(async (req, res, next) => {
   });
 
   if (!doctors.length) {
-    return next(new ErrorHandler("No Doctors Found", 404));
+    if(department === 'dummy'){
+        return;
+    }
+    else{
+        return next(new ErrorHandler("No Doctors Found", 404));
+    }
   }
 
   res.status(200).json({

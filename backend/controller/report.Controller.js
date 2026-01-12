@@ -1,7 +1,7 @@
 import { Report } from "../models/report.Model.js";
 import { Appointment } from "../models/applointment.Model.js";
 import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
-
+import ErrorHandler from "../middleware/errorMiddleware.js";
 
 export const getAllReports = catchAsyncErrors(async (req, res, next) => {
     try{
@@ -50,8 +50,17 @@ export const createReport = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getMyReports = catchAsyncErrors(async (req, res, next) => {
-    const limit = Number(req.query.limit) || 5;
-        const reports = await Report.find({patientId: req.params.id}).limit(limit).sort({createdAt:-1});
+    const limit = Number(req.query.limit) || 10;
+    const userId = req.params.id;
+    if (!userId) {
+        return next(new ErrorHandler("Please provide a user id", 400));
+        }
+    const reports = await Report.find({
+    $or: [
+      { patientId: userId },
+      { doctorId: userId }
+    ]
+  }).populate("patientId").populate("doctorId").limit(limit);
         res.status(200).json({
             success: true,
             reports,
@@ -62,12 +71,18 @@ export const getMyReports = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getreport = catchAsyncErrors(async (req, res, next) => {
-        const report = await Report.find({_id: req.params.id}).populate("patientId").populate("doctorId");
+    const Id = req.params.id;
+    const report = await Report.find({
+        $or: [
+            { _id: Id },
+            { appointmentId: Id }
+        ],
+        }).populate("patientId").populate("doctorId");
         res.status(200).json({
             success: true,
             report,
         });
-        if(!reports){
+        if(!report){
             return next("No reports found", 404);
         }
 });
