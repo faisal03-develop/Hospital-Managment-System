@@ -114,7 +114,17 @@ export const deleteAppointment = catchAsyncErrors(async (req, res, next) => {
 
 export const getAppointments = catchAsyncErrors( async (req, res, next) => {
     let appointments = [];
-    const totalAppointment = await Appointment.countDocuments();
+    let filter = {doctorId: req.user._id};
+    // if(req.query.status){
+    //     filter.status = req.query.status;
+    // }
+    // if(req.query.a_date){
+    //     filter.a_date = { $gte: new Date(req.query.a_date) };
+    // }
+    // if(req.query.department){
+    //     filter.department = req.query.department;
+    const totalMatchingAppointments = await Appointment.countDocuments(filter);
+    // const totalAppointment = await Appointment.countDocuments();
     const pendingTasks = await Appointment.countDocuments({ status: "pending" });
     const limit = Number(req.query.limit) || 5;
     if(req.query.status === 'pending'){
@@ -142,7 +152,8 @@ export const getAppointments = catchAsyncErrors( async (req, res, next) => {
     res.status(200).json({
         success: true,
         appointments,
-        totalAppointment,
-        pendingTasks
+        totalMatchingAppointments,
+        pendingTasks,
+        hasMore: totalMatchingAppointments > limit,
     });
 });

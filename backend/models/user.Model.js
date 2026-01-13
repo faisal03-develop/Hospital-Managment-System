@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
         },
         email: {
             type: String,
+            unique: true,
             required: true,
             validate: [validator.isEmail, "Please provide a valid email"]
         },
@@ -28,9 +29,10 @@ const userSchema = new mongoose.Schema({
         },
         nic: {
             type: String,
+            unique: true,
             required: true,
-            minLength: [13, "CNIC must contain at least 11 characters"],
-            maxLength: [13, "CNIC must contain at most 11 characters"]
+            minLength: [13, "CNIC must contain at least 13 characters"],
+            maxLength: [13, "CNIC must contain at most 13 characters"]
         },
         dob:{
             type: Date,
@@ -54,10 +56,13 @@ const userSchema = new mongoose.Schema({
             default: "patient",
             required: true
         },
-        doctorDepartment:{
+        doctorDepartment: {
             type: String,
-            enum: ["Cardiology", "Dermatology", "Neurology", "Pediatrics", "Oncology", "Orthopedics", "ENT"]
-        },
+            enum: ["Cardiology", "Dermatology", "Neurology", "Pediatrics", "Oncology", "Orthopedics", "ENT"],
+            required: function () {
+              return this.role === "doctor";
+            }
+          },
         docAvatar:{
             public_id: String,
             url: String
