@@ -10,9 +10,9 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
     if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic || !role){
         return next(new ErrorHandler("Please Fill Full Form", 400));
     }
-    let user = await User.findOne({email})
+    let user = await User.findOne({email, phone, nic})
     if(user){
-        return next(new ErrorHandler("Email Already Registered", 400));
+        return next(new ErrorHandler("Email, Phone or CNIC Already Registered", 400));
     } 
     user = await User.create({
         firstName, lastName, email, phone, password, gender, dob, nic, role, doctorDepartment, docAvatar
@@ -50,11 +50,11 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
         }
         const user = await User.findOne({email}).select("+password");
         if(!user){
-            return next(new ErrorHandler("Invalid Credentials", 400));
+            return next(new ErrorHandler("No User Found with this email", 400));
         }
         const isPasswordMatched = await user.comparePassword(password);
         if(!isPasswordMatched){
-            return next(new ErrorHandler("Incorrect Password or Email", 400));
+            return next(new ErrorHandler("Invalid Credentials", 400));
         }
         // const token = await user.generateToken();
         return generateeToken(user, "User Logged In Successfully", 200, res);
@@ -96,35 +96,26 @@ export const getUserDetails = catchAsyncErrors( async(req, res, next) => {
     })
 })
 
-export const adminLogout = catchAsyncErrors(async(req, res, next) => {
-    res.status(200).cookie("adminToken", "", {
-        httpOnly: true,
-        expires: new Date(Date.now()),
-    }).json({
-        success: true,
-        message: "Admin Logged Out Successfully"
-    })
-})
-
-
-export const userLogout = catchAsyncErrors(async(req, res, next) => {
-    res.status(200).cookie("patientToken", "", {
-        httpOnly: true,
-        expires: new Date(Date.now()),
-    }).json({
-        success: true,
-        message: "User Logged Out Successfully"
-    })
-});
-
-export const doctorLogout = catchAsyncErrors(async(req, res, next) => {
-    res.status(200).cookie("doctorToken", "", {
-        httpOnly: true,
-        expires: new Date(Date.now()),
-    }).json({
-        success: true,
-        message: "Doctor Logged Out Successfully"
-    })
+export const logout = catchAsyncErrors(async (req, res, next) => {
+    const { role } = req.query;
+    const tokenMap = {
+        admin: "adminToken",
+        doctor: "doctorToken",
+        patient: "patientToken",
+    };
+    const cookieName = tokenMap[role];
+    if (!cookieName) {
+        return next(new ErrorHandler("Invalid role provided for logout", 400));
+    }
+    res.status(200).cookie(cookieName, "",
+        {
+            httpOnly: true,
+            expires: new Date(Date.now()),
+        })
+        .json({
+            success: true,
+            message: `${role.charAt(0).toUpperCase() + role.slice(1)} Logged Out Successfully`,
+        });
 });
 
 export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
@@ -147,8 +138,8 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
     }
     const cloudinaryResponse = await cloudinary.uploader.upload(docAvatar.tempFilePath);
     if(!cloudinaryResponse || cloudinaryResponse.error){
-        console.log("Cloudinary Error: ",cloudinaryResponse.error || "Unknown Cloudinary Error");
-    }
+        return next(new ErrorHandler("File upload failed", 500));
+    }    
     const doctor = await User.create({
         firstName, lastName, email, phone, password, role:"doctor", gender, dob, nic, doctorDepartment, docAvatar:{
             public_id: cloudinaryResponse.public_id, 
@@ -163,10 +154,14 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
 });
 
 export const getAllUsers = catchAsyncErrors( async(req, res, next) => {
-    const users = await User.find({});
+    const limit = req.query.limit || 10;
+    const totalUsers = await User.countDocuments();
+    const users = await User.find({}).limit(limit).sort({ createdAt: 1 });
     res.status(200).json({
         success: true,
         users,
+        totalUsers,
+        hasMore: totalUsers > limit,
     });
 })
 
