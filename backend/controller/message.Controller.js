@@ -1,5 +1,5 @@
 
-import {Message} from "../models/messege.Model.js"
+import {Message} from "../models/messege.model.js"
 import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
 

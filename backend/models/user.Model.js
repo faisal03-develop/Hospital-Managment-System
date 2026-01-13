@@ -93,3 +93,6 @@ const userSchema = new mongoose.Schema({
 
 
 export const User = mongoose.model("User", userSchema);
+
+
+// This is the User Model

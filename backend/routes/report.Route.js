@@ -1,5 +1,5 @@
 import express from "express";
-import {createReport, getMyReports, getreport} from "../controller/report.Controller.js"
+import {createReport, getMyReports, getreport} from "../controller/report.controller.js"
 import { isDoctorAuthenticated, isPatientAuthenticated } from "../middleware/auth.js";
 
 const router = express.Router();

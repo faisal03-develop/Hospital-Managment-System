@@ -1,5 +1,5 @@
 import express from "express";
-import { sendMesssage, getAllMessages } from "../controller/message.Controller.js";
+import { sendMesssage, getAllMessages } from "../controller/message.controller.js";
 import {isAdminAuthenticated} from "../middleware/auth.js"
 
 const router = express.Router();

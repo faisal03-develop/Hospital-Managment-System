@@ -1,5 +1,5 @@
-import { Report } from "../models/report.Model.js";
-import { Appointment } from "../models/applointment.Model.js";
+import { Report } from "../models/report.model.js";
+import { Appointment } from "../models/applointment.model.js";
 import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { registerUser, login, addNewAdmin, findAllDoctors, getUserDetails, getDoctor, adminLogout, userLogout, addNewDoctor, doctorLogout, getAllUsers,updateUser } from "../controller/user.Controller.js";
+import { registerUser, login, addNewAdmin, findAllDoctors, getUserDetails, getDoctor, adminLogout, userLogout, addNewDoctor, doctorLogout, getAllUsers,updateUser } from "../controller/user.controller.js";
 import { isPatientAuthenticated, isAdminAuthenticated, isDoctorAuthenticated, isAuthenticated } from "../middleware/auth.js";
 const router = express.Router();
 

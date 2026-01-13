@@ -1,7 +1,7 @@
 import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
-import { Appointment } from "../models/applointment.Model.js";
-import { User } from "../models/user.Model.js";
+import { Appointment } from "../models/applointment.model.js";
+import { User } from "../models/user.model.js";
 import {isNotPastDate, isToday} from "../utils/dateUtils.js";
 
 
@@ -65,10 +65,13 @@ export const getMyAppointments = catchAsyncErrors( async (req, res, next) => {
 })
 
 export const getAllAppointments = catchAsyncErrors(async (req, res, next) => {
-    const appointments = await Appointment.find().populate("patientId").populate("doctorId");
+    const limit = req.query.limit || 10;
+    const totalAppointments = await Appointment.countDocuments();
+    const appointments = await Appointment.find().limit(limit).sort({ createdAt: 1 }).populate("patientId").populate("doctorId");
     res.status(200).json({
         success: true,
         appointments,
+        totalAppointments
     });
 });
 

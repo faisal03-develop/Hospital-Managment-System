@@ -4,11 +4,11 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { dbConnection } from "./db/dbConnection.js";
-import MessageRoute from "./routes/message.Route.js";
+import MessageRoute from "./routes/message.route.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
-import UserRoute from "./routes/user.Route.js";
-import AppointmentRoute from "./routes/appointment.Route.js";
-import ReportRoute from "./routes/report.Route.js"
+import UserRoute from "./routes/user.route.js";
+import AppointmentRoute from "./routes/appointment.route.js";
+import ReportRoute from "./routes/report.route.js"
 
 
 const app = express();

@@ -1,6 +1,6 @@
 import { catchAsyncErrors } from "../middleware/catchAsyncError.js";
 import ErrorHandler from "../middleware/errorMiddleware.js";
-import { User } from "../models/user.Model.js";
+import { User } from "../models/user.model.js";
 import { generateeToken } from "../utils/jwtToken.js";
 import cloudinary from 'cloudinary';
 
@@ -17,7 +17,7 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
     user = await User.create({
         firstName, lastName, email, phone, password, gender, dob, nic, role, doctorDepartment, docAvatar
     });
-    generateeToken(user, "User Registered Successfully", 200, res);
+    return generateeToken(user, "User Registered Successfully", 200, res);
 
 });
 
@@ -57,7 +57,7 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
             return next(new ErrorHandler("Incorrect Password or Email", 400));
         }
         // const token = await user.generateToken();
-        generateeToken(user, "User Logged In Successfully", 200, res);
+        return generateeToken(user, "User Logged In Successfully", 200, res);
         
 });
 
@@ -76,7 +76,7 @@ export const addNewAdmin = catchAsyncErrors(async(req, res ,next) => {
     user = await User.create({
         firstName, lastName, email, phone, password, gender, dob, nic, role:"admin"
     });
-    generateeToken(user, "Admin Registered Successfully", 200, res);
+    return generateeToken(user, "Admin Registered Successfully", 200, res);
 })
 
 export const findAllDoctors = catchAsyncErrors( async(req, res, next) => {
@@ -163,16 +163,11 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
 });
 
 export const getAllUsers = catchAsyncErrors( async(req, res, next) => {
-    try{
-        const users = await User.find({});
-        res.status(200).json({
-            success: true,
-            users,
-        });
-    }
-    catch(error){
-        return next(new ErrorHandler(error.message, 500));
-    }
+    const users = await User.find({});
+    res.status(200).json({
+        success: true,
+        users,
+    });
 })
 
 export const updateUser = catchAsyncErrors( async(req, res, next) => {
