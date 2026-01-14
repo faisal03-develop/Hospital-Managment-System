@@ -123,9 +123,17 @@ export const getAppointments = catchAsyncErrors( async (req, res, next) => {
     // }
     // if(req.query.department){
     //     filter.department = req.query.department;
-    const totalMatchingAppointments = await Appointment.countDocuments(filter);
     // const totalAppointment = await Appointment.countDocuments();
-    const pendingTasks = await Appointment.countDocuments({ status: "pending" });
+    const totalMatchingAppointments = await Appointment.countDocuments(filter);
+    
+    const [pending, completed, accepted] = await Promise.all([
+        Appointment.countDocuments({ status: "pending" }),
+        Appointment.countDocuments({ status: "completed" }),
+        Appointment.countDocuments({ status: "accepted" })
+      ]);
+      
+      const taskStats = { pending, completed, accepted };
+      
     const limit = Number(req.query.limit) || 5;
     if(req.query.status === 'pending'){
         appointments = await Appointment.find({ doctorId: req.user._id, status: "pending" }).sort({ createdAt: -1 })
@@ -153,7 +161,7 @@ export const getAppointments = catchAsyncErrors( async (req, res, next) => {
         success: true,
         appointments,
         totalMatchingAppointments,
-        pendingTasks,
+        taskStats,
         hasMore: totalMatchingAppointments > limit,
     });
 });

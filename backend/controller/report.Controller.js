@@ -5,13 +5,17 @@ import ErrorHandler from "../middleware/errorMiddleware.js";
 
 export const getAllReports = catchAsyncErrors(async (req, res, next) => {
     try{
-        const reports = await Report.find();
+        const reports = await Report.find()
+            .populate("patientId")
+            .populate("doctorId")
+            .populate("appointmentId")
+            .sort({ createdAt: -1 });
         res.status(200).json({
             success: true,
             reports,
         });
     }catch(error){
-        next(`Failed to fetch reports: ${error}`, 500);
+        return next(new ErrorHandler(`Failed to fetch reports: ${error.message}`, 500));
     }
     });
 
