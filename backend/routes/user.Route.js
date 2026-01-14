@@ -8,7 +8,7 @@ router.post('/register', registerUser)
 router.post('/login', login)
 router.post('/addnewadmin',authenticate, authorizeRoles('admin'), addNewAdmin)
 router.get('/doctors', findAllDoctors)
-router.get('/logout', logout)
+router.post('/logout',authenticate, logout)
 router.post('/addnewdoctor', authenticate, authorizeRoles('admin'), addNewDoctor)
 router.get("/me", authenticate, getUserDetails);
 router.get("/getallusers", authenticate, authorizeRoles('admin'), getAllUsers);

@@ -96,27 +96,57 @@ export const getUserDetails = catchAsyncErrors( async(req, res, next) => {
     })
 })
 
+// export const logout = catchAsyncErrors(async (req, res, next) => {
+//     const { role } = req.query;
+//     const tokenMap = {
+//         admin: "adminToken",
+//         doctor: "doctorToken",
+//         patient: "patientToken",
+//     };
+//     const cookieName = tokenMap[role];
+//     if (!cookieName) {
+//         return next(new ErrorHandler("Invalid role provided for logout", 400));
+//     }
+//     res.status(200).cookie(cookieName, "",
+//         {
+//             httpOnly: true,
+//             expires: new Date(Date.now()),
+//         })
+//         .json({
+//             success: true,
+//             message: `${role.charAt(0).toUpperCase() + role.slice(1)} Logged Out Successfully`,
+//         });
+// });
+
 export const logout = catchAsyncErrors(async (req, res, next) => {
-    const { role } = req.query;
+    const { role } = req.user;
+  
     const tokenMap = {
-        admin: "adminToken",
-        doctor: "doctorToken",
-        patient: "patientToken",
+      admin: "adminToken",
+      doctor: "doctorToken",
+      patient: "patientToken",
     };
+  
     const cookieName = tokenMap[role];
+  
     if (!cookieName) {
-        return next(new ErrorHandler("Invalid role provided for logout", 400));
+      return next(new ErrorHandler("Invalid user role", 400));
     }
-    res.status(200).cookie(cookieName, "",
-        {
-            httpOnly: true,
-            expires: new Date(Date.now()),
-        })
-        .json({
-            success: true,
-            message: `${role.charAt(0).toUpperCase() + role.slice(1)} Logged Out Successfully`,
-        });
-});
+  
+    res
+      .status(200)
+      .cookie(cookieName, "", {
+        httpOnly: true,
+        expires: new Date(0),
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+      })
+      .json({
+        success: true,
+        message: "Logged out successfully",
+      });
+  });
+  
 
 export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
     if(!req.files || Object.keys(req.files).length === 0){
